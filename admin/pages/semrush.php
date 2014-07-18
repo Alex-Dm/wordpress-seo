@@ -28,8 +28,8 @@ $wpseo_admin_pages->admin_header( true, WPSEO_Options::get_group_name( 'wpseo_se
 		<?php submit_button(); ?>
 	</div>
 	<div id="semrush-stats" class="wpseotab">
-		<iframe src="http://semrush.com/" width="90%" height="500" style="margin: 10px;"></iframe>
+		<div id="semrush-frame-container">
+			<div class="wpseo-sem-loader"></div>
+		</div>
 	</div>
 </div>
-
-<?php

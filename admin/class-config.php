@@ -333,6 +333,7 @@ if ( ! class_exists( 'WPSEO_Admin_Pages' ) ) {
 		 */
 		function config_page_styles() {
 			global $pagenow;
+
 			if ( $pagenow === 'admin.php' && isset( $_GET['page'] ) && in_array( $_GET['page'], $this->adminpages ) ) {
 				wp_enqueue_style( 'dashboard' );
 				wp_enqueue_style( 'thickbox' );
@@ -347,6 +348,10 @@ if ( ! class_exists( 'WPSEO_Admin_Pages' ) ) {
 
 			if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'wpseo_bulk-title-editor', 'wpseo_bulk-description-editor' ) ) ) {
 				wp_enqueue_style( 'yoast-admin-css', plugins_url( 'css/yst_plugin_tools' . WPSEO_CSSJS_SUFFIX . '.css', WPSEO_FILE ), array(), WPSEO_VERSION );
+			}
+
+			if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'wpseo_semrush' ) {
+				wp_enqueue_style( 'yoast-semrush-css', plugins_url( 'css/wpseo-semrush' . WPSEO_CSSJS_SUFFIX . '.css', WPSEO_FILE ), array(), WPSEO_VERSION );
 			}
 		}
 
@@ -365,6 +370,10 @@ if ( ! class_exists( 'WPSEO_Admin_Pages' ) ) {
 
 			if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'wpseo_bulk-title-editor', 'wpseo_bulk-description-editor' ) ) ) {
 				wp_enqueue_script( 'wpseo-bulk-editor', plugins_url( 'js/wp-seo-bulk-editor' . WPSEO_CSSJS_SUFFIX . '.js', WPSEO_FILE ), array( 'jquery' ), WPSEO_VERSION, true );
+			}
+
+			if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'wpseo_semrush' ) {
+				wp_enqueue_script( 'wpseo-semrush', plugins_url( 'js/wp-seo-admin-semrush' . WPSEO_CSSJS_SUFFIX  . '.js', WPSEO_FILE ), array( 'jquery' ), WPSEO_VERSION, true );
 			}
 		}
 
