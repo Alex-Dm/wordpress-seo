@@ -2894,6 +2894,61 @@ if ( ! class_exists( 'WPSEO_Option_Social' ) ) {
 
 
 /*******************************************************************
+ * Option: wpseo_semrush
+ *******************************************************************/
+if ( ! class_exists( 'WPSEO_Options_Semrush' ) ) {
+
+	class WPSEO_Options_Semrush extends WPSEO_Option {
+
+		/**
+		 * @var  string  option name
+		 */
+		public $option_name = 'wpseo_semrush';
+
+		/**
+		 * @var  array  Array of defaults for the option
+		 *        Shouldn't be requested directly, use $this->get_defaults();
+		 */
+		protected $defaults = array(
+			'semrush_login'      => '', // text field
+			'semrush_password'   => '', // text field
+		);
+
+		/**
+		 * Get the singleton instance of this class
+		 *
+		 * @return object
+		 */
+		public static function get_instance() {
+			if ( ! ( self::$instance instanceof self ) ) {
+				self::$instance = new self();
+			}
+
+			return self::$instance;
+		}
+
+		/**
+		 * Validate the option
+		 *
+		 * @param  array $dirty New value for the option
+		 * @param  array $clean Clean value for the option, normally the defaults
+		 * @param  array $old   Old value of the option
+		 *
+		 * @return  array      Validated clean value for the option to be saved to the database
+		 */
+		protected function validate_option( $dirty, $clean, $old ) {
+			foreach ( $clean as $key => $value ) {
+				if ( isset( $dirty[ $key ] ) ) {
+					$clean[ $key ] = wp_kses_post( $dirty[ $key ] );
+				}
+			}
+
+			return $clean;
+		}
+	}
+}
+
+/*******************************************************************
  * Option: wpseo_ms
  *******************************************************************/
 if ( is_multisite() && ! class_exists( 'WPSEO_Option_MS' ) ) {
@@ -3559,6 +3614,7 @@ if ( ! class_exists( 'WPSEO_Options' ) ) {
 			'wpseo_xml'           => 'WPSEO_Option_XML',
 			'wpseo_ms'            => 'WPSEO_Option_MS',
 			'wpseo_taxonomy_meta' => 'WPSEO_Taxonomy_Meta',
+			'wpseo_semrush'       => 'WPSEO_Options_Semrush'
 		);
 
 		protected static $option_instances;

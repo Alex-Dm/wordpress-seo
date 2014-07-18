@@ -40,6 +40,7 @@ if ( ! class_exists( 'WPSEO_Admin_Pages' ) ) {
 			'wpseo_bulk-description-editor',
 			'wpseo_licenses',
 			'wpseo_network_licenses',
+			'wpseo_semrush'
 		);
 
 		/**
