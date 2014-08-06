@@ -889,6 +889,8 @@ if ( ! class_exists( 'WPSEO_Option_Wpseo' ) ) {
 			'pinterestverify'                 => '',
 			'yandexverify'                    => '',
 			'yoast_tracking'                  => false,
+			'semrush_login'                   => '', // text field
+			'semrush_password'                => '', // text field
 		);
 
 		public static $desc_defaults = array(
@@ -1072,6 +1074,46 @@ if ( ! class_exists( 'WPSEO_Option_Wpseo' ) ) {
 						}
 						break;
 
+					case 'semrush_login':
+						if ( isset( $dirty[ $key ] ) && $dirty[ $key ] !== '' ) {
+
+							$email = $dirty[ $key ];
+							$regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+
+							if (preg_match($regex, $email)) {
+								$clean[ $key ] = $email;
+							}else{
+								if ( function_exists( 'add_settings_error' ) ) {
+									add_settings_error(
+										$this->group_name, // slug title of the setting
+										'_' . $key, // suffix-id for the error message box
+										sprintf( __( '%s does not seem to be a valid email. Please correct.', 'wordpress-seo' ), '<strong>' . esc_html( $email ) . '</strong>' ), // the error message
+										'error' // error type, either 'error' or 'updated'
+									);
+								}
+							}
+						}
+						break;
+
+					case 'semrush_password':
+						if ( isset( $dirty[ $key ] ) && $dirty[ $key ] !== '' ) {
+
+							$pass = $dirty[ $key ];
+
+							if(!empty($pass)){
+								$clean[ $key ] = $pass;
+							}else{
+								if ( function_exists( 'add_settings_error' ) ) {
+									add_settings_error(
+										$this->group_name, // slug title of the setting
+										'_' . $key, // suffix-id for the error message box
+										sprintf( __( 'Password can not be empty', 'wordpress-seo' ) ), // the error message
+										'error' // error type, either 'error' or 'updated'
+									);
+								}
+							}
+						}
+						break;
 
 					/* boolean|null fields - if set a check was done, if null, it hasn't */
 					case 'theme_has_description':
@@ -2892,61 +2934,6 @@ if ( ! class_exists( 'WPSEO_Option_Social' ) ) {
 
 } /* End of class-exists wrapper */
 
-
-/*******************************************************************
- * Option: wpseo_semrush
- *******************************************************************/
-if ( ! class_exists( 'WPSEO_Options_Semrush' ) ) {
-
-	class WPSEO_Options_Semrush extends WPSEO_Option {
-
-		/**
-		 * @var  string  option name
-		 */
-		public $option_name = 'wpseo_semrush';
-
-		/**
-		 * @var  array  Array of defaults for the option
-		 *        Shouldn't be requested directly, use $this->get_defaults();
-		 */
-		protected $defaults = array(
-			'semrush_login'      => '', // text field
-			'semrush_password'   => '', // text field
-		);
-
-		/**
-		 * Get the singleton instance of this class
-		 *
-		 * @return object
-		 */
-		public static function get_instance() {
-			if ( ! ( self::$instance instanceof self ) ) {
-				self::$instance = new self();
-			}
-
-			return self::$instance;
-		}
-
-		/**
-		 * Validate the option
-		 *
-		 * @param  array $dirty New value for the option
-		 * @param  array $clean Clean value for the option, normally the defaults
-		 * @param  array $old   Old value of the option
-		 *
-		 * @return  array      Validated clean value for the option to be saved to the database
-		 */
-		protected function validate_option( $dirty, $clean, $old ) {
-			foreach ( $clean as $key => $value ) {
-				if ( isset( $dirty[ $key ] ) ) {
-					$clean[ $key ] = wp_kses_post( $dirty[ $key ] );
-				}
-			}
-
-			return $clean;
-		}
-	}
-}
 
 /*******************************************************************
  * Option: wpseo_ms

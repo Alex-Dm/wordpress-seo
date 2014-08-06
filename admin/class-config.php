@@ -461,6 +461,25 @@ if ( ! class_exists( 'WPSEO_Admin_Pages' ) ) {
 		}
 
 		/**
+		 * Create a Password input field.
+		 *
+		 * @param string $var    The variable within the option to create the text input field for.
+		 * @param string $label  The label to show for the variable.
+		 * @param string $option The option the variable belongs to.
+		 * @return string
+		 */
+		function password( $var, $label, $option = '' ) {
+			if ( empty( $option ) ) {
+				$option = $this->currentoption;
+			}
+
+			$options = $this->get_option( $option );
+			$val     = ( isset( $options[ $var ] ) ) ? $options[ $var ] : '';
+
+			return '<label class="textinput" for="' . esc_attr( $var ) . '">' . $label . ':</label><input class="textinput" type="password" id="' . esc_attr( $var ) . '" name="' . esc_attr( $option ) . '[' . esc_attr( $var ) . ']" value="' . esc_attr( $val ) . '"/>' . '<br class="clear" />';
+		}
+
+		/**
 		 * Create a textarea.
 		 *
 		 * @param string $var    The variable within the option to create the textarea for.

@@ -32,6 +32,24 @@ if ( isset( $_GET['allow_tracking'] ) && check_admin_referer( 'wpseo_activate_tr
 }
 
 
+// Semrush options
+if(!empty($options['semrush_login']) && !empty($options['semrush_password'])){
+
+	$sem = new WPSEO_Semrush();
+
+	if($sem->checkUser($options['semrush_login'], $options['semrush_password'])){
+		$token = $sem->getRefreshToken($options['semrush_login'], $options['semrush_password']);
+
+		$options['semrush_token'] = $token;
+		unset($options['semrush_password']);
+
+		update_option( 'wpseo', $options );
+	}else{
+		//TODO: register user
+	}
+}
+
+
 // Fix metadescription if so requested
 if ( isset( $_GET['fixmetadesc'] ) && check_admin_referer( 'wpseo-fix-metadesc', 'nonce' ) && $options['theme_description_found'] !== '' ) {
 	$path = false;
@@ -166,6 +184,10 @@ echo $wpseo_admin_pages->textinput( 'msverify', '<a target="_blank" href="' . es
 echo $wpseo_admin_pages->textinput( 'googleverify', '<a target="_blank" href="' . esc_url( 'https://www.google.com/webmasters/verification/verification?hl=en&siteUrl=' . urlencode( get_bloginfo( 'url' ) ) . '/' ) . '">' . __( 'Google Webmaster Tools', 'wordpress-seo' ) . '</a>' );
 echo $wpseo_admin_pages->textinput( 'pinterestverify', '<a target="_blank" href="https://help.pinterest.com/entries/22488487-Verify-with-HTML-meta-tags">' . __( 'Pinterest', 'wordpress-seo' ) . '</a>' );
 echo $wpseo_admin_pages->textinput( 'yandexverify', '<a target="_blank" href="http://help.yandex.com/webmaster/service/rights.xml#how-to">' . __( 'Yandex Webmaster Tools', 'wordpress-seo' ) . '</a>' );
+
+echo '<h2>' . __( 'SEMrush Settings', 'wordpress-seo' ) . '</h2>';
+echo $wpseo_admin_pages->textinput( 'semrush_login', __( 'Login', 'wordpress-seo' ) );
+echo $wpseo_admin_pages->password( 'semrush_password', __( 'Password', 'wordpress-seo' ) );
 
 do_action( 'wpseo_dashboard' );
 

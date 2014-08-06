@@ -85,6 +85,8 @@ function wpseo_auto_load( $class ) {
 			'wp_list_table'                      => ABSPATH . 'wp-admin/includes/class-wp-list-table.php',
 			'walker_category'                    => ABSPATH . 'wp-includes/category-template.php',
 			'pclzip'                             => ABSPATH . 'wp-admin/includes/class-pclzip.php',
+
+			'wpseo_semrush'                      => WPSEO_PATH . 'admin/class-semrush.php'
 		);
 	}
 
